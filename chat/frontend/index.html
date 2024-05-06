@@ -35,7 +35,23 @@
                 <input type="text" class="chat__input" placeholder="Digite uma mensagem" required />
                 <button type="submit" class="chat__button">
                     <span class="material-symbols-outlined">send</span>
+                    <button type="button" class="chat__code-button">Code</button>
                 </button>
+                <!-- Adicione esta div para a tela quadrada -->
+                <div class="code-popup" id="code-popup">
+                    <div class="code-popup__content">
+                        <h2>Place Your Code</h2>
+                        <!-- Adicione um textarea para inserir código JavaScript -->
+                        <textarea class="code-popup__textarea" placeholder="Insira seu código JavaScript aqui"></textarea>
+                        <!-- Adicione um botão para executar o código inserido -->
+                        <button class="code-popup__button">Executar</button>
+                        <!-- Adicione um elemento para exibir a saída do console -->
+                        <div class="code-popup__console" id="code-popup-console"></div>
+                    </div>
+                </div>
+                
+</div>
+
             </form>
         </section>
 
