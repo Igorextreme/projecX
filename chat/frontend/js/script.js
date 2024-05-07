@@ -82,7 +82,7 @@ const handleLogin = (event) => {
     login.style.display = "none";
     chat.style.display = "flex";
 
-    websocket = new WebSocket("wss://chatcode-4p2g.onrender.com");
+    websocket = new WebSocket("ws://localhost:8080");
     websocket.onmessage = processMessage;
 };
 
@@ -133,4 +133,13 @@ codeButtonExecutar.addEventListener("click", () => {
         // Em caso de erro, exiba o erro no console
         codeConsole.textContent = error.toString();
     }
+});
+
+// Selecione o botão de fechar
+const closeBtn = document.querySelector(".code-popup__close-btn");
+
+// Adicione um event listener para o clique no botão de fechar
+closeBtn.addEventListener("click", () => {
+    // Oculte a janela quando o botão de fechar for clicado
+    codePopup.style.display = "none";
 });
