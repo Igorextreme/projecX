@@ -143,3 +143,41 @@ closeBtn.addEventListener("click", () => {
     // Oculte a janela quando o botão de fechar for clicado
     codePopup.style.display = "none";
 });
+
+// Contador de usuários online
+let onlineUsers = 0;
+
+wss.on("connection", (ws) => {
+    // Incrementa o contador de usuários online quando um novo cliente se conecta
+    onlineUsers++;
+    console.log("Novo cliente conectado. Total de usuários online:", onlineUsers);
+
+    // Envia o número atual de usuários online para todos os clientes
+    wss.clients.forEach((client) => {
+        client.send(JSON.stringify({ type: 'onlineUsers', count: onlineUsers }));
+    });
+
+    ws.on("error", (error) => {
+        console.error("Erro de conexão:", error);
+    });
+
+    ws.on("close", () => {
+        // Decrementa o contador de usuários online quando um cliente se desconecta
+        onlineUsers--;
+        console.log("Cliente desconectado. Total de usuários online:", onlineUsers);
+
+        // Envia o número atual de usuários online para todos os clientes
+        wss.clients.forEach((client) => {
+            client.send(JSON.stringify({ type: 'onlineUsers', count: onlineUsers }));
+        });
+    });
+
+    ws.on("message", (data) => {
+        // Reenvia a mensagem recebida para todos os clientes
+        wss.clients.forEach((client) => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(data);
+            }
+        });
+    });
+});
