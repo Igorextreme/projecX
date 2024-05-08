@@ -67,10 +67,9 @@ const processMessage = ({ data }) => {
        userId === user.id ? createMessageSelfElement(content) :
        createMessageOtherElement(content, userName, userColor);
 
-    if (chatMessages) {
-        chatMessages.appendChild(message);
-        scrollScreen();
-    }
+    chatMessages.appendChild(message);
+
+    scrollScreen();
 };
 
 const handleLogin = (event) => {
@@ -80,12 +79,8 @@ const handleLogin = (event) => {
     user.name = loginInput.value;
     user.color = getRandomColor();
 
-    if (login) {
-        login.style.display = "none";
-    }
-    if (chat) {
-        chat.style.display = "flex";
-    }
+    login.style.display = "none";
+    chat.style.display = "flex";
 
     websocket = new WebSocket("wss://chatcode-4p2g.onrender.com");
     websocket.onmessage = processMessage;
@@ -93,11 +88,6 @@ const handleLogin = (event) => {
 
 const sendMessage = (event) => {
     event.preventDefault();
-
-    if (!websocket || websocket.readyState !== WebSocket.OPEN) {
-        console.error("WebSocket connection is not open.");
-        return;
-    }
 
     const message = {
         userId: user.id,
@@ -111,12 +101,8 @@ const sendMessage = (event) => {
     chatInput.value = "";
 };
 
-if (loginForm) {
-    loginForm.addEventListener("submit", handleLogin);
-}
-if (chatForm) {
-    chatForm.addEventListener("submit", sendMessage);
-}
+loginForm.addEventListener("submit", handleLogin);
+chatForm.addEventListener("submit", sendMessage);
 
 // Selecione o botão Code
 const codeButton = document.querySelector(".chat__code-button");
@@ -124,23 +110,10 @@ const codeButton = document.querySelector(".chat__code-button");
 const codePopup = document.getElementById("code-popup");
 
 // Adicione um event listener para o clique no botão Code
-if (codeButton && codePopup) {
-    codeButton.addEventListener("click", () => {
-        // Exiba a tela quadrada quando o botão Code for clicado
-        codePopup.style.display = "block";
-    });
-}
-
-// Selecione o botão de fechar
-const closeBtn = document.querySelector(".code-popup__close-btn");
-
-// Adicione um event listener para o clique no botão de fechar
-if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-        // Oculte a janela quando o botão de fechar for clicado
-        codePopup.style.display = "none";
-    });
-}
+codeButton.addEventListener("click", () => {
+    // Exiba a tela quadrada quando o botão Code for clicado
+    codePopup.style.display = "block";
+});
 
 // Selecione o textarea, o botão e o console
 const codeTextarea = document.querySelector(".code-popup__textarea");
@@ -148,18 +121,25 @@ const codeButtonExecutar = document.querySelector(".code-popup__button");
 const codeConsole = document.getElementById("code-popup-console");
 
 // Adicione um event listener para o clique no botão Executar
-if (codeButtonExecutar) {
-    codeButtonExecutar.addEventListener("click", () => {
-        try {
-            // Limpe a saída anterior do console
-            codeConsole.textContent = "";
-            // Obtenha o código inserido no textarea
-            const code = codeTextarea.value;
-            // Execute o código usando eval
-            eval(code);
-        } catch (error) {
-            // Em caso de erro, exiba o erro no console
-            codeConsole.textContent = error.toString();
-        }
-    });
-}
+codeButtonExecutar.addEventListener("click", () => {
+    try {
+        // Limpe a saída anterior do console
+        codeConsole.textContent = "";
+        // Obtenha o código inserido no textarea
+        const code = codeTextarea.value;
+        // Execute o código usando eval
+        eval(code);
+    } catch (error) {
+        // Em caso de erro, exiba o erro no console
+        codeConsole.textContent = error.toString();
+    }
+});
+
+// Selecione o botão de fechar
+const closeBtn = document.querySelector(".code-popup__close-btn");
+
+// Adicione um event listener para o clique no botão de fechar
+closeBtn.addEventListener("click", () => {
+    // Oculte a janela quando o botão de fechar for clicado
+    codePopup.style.display = "none";
+});
