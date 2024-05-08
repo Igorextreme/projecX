@@ -113,6 +113,8 @@ const codePopup = document.getElementById("code-popup");
 codeButton.addEventListener("click", () => {
     // Exiba a tela quadrada quando o botão Code for clicado
     codePopup.style.display = "block";
+    // Limpe o console quando a tela de código for aberta
+    codeConsole.textContent = "";
 });
 
 // Selecione o textarea, o botão e o console
@@ -131,6 +133,7 @@ codeButtonExecutar.addEventListener("click", () => {
         eval(code);
     } catch (error) {
         // Em caso de erro, exiba o erro no console
+        console.error(error);
         codeConsole.textContent = error.toString();
     }
 });
@@ -143,3 +146,13 @@ closeBtn.addEventListener("click", () => {
     // Oculte a janela quando o botão de fechar for clicado
     codePopup.style.display = "none";
 });
+
+// Substitua a função console.log para exibir logs no elemento codeConsole
+const originalConsoleLog = console.log;
+console.log = function(message) {
+    // Chame a função original console.log para exibir o log no console do navegador
+    originalConsoleLog.apply(console, arguments);
+    
+    // Adicione o log ao elemento codeConsole
+    codeConsole.textContent += message + "\n";
+};
