@@ -248,26 +248,3 @@ body {
 }
 
 
-
-.online-users {
-    position: fixed;
-    top: 20px;
-    right: 20px; /* Alterado de "bottom" para "right" */
-    background-color: rgba(29, 4, 4, 0.7);
-    color: #ffffff;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.online-users-counter {
-    margin-right: 10px;
-}
-
-.online-users-indicator {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: green;
-}
