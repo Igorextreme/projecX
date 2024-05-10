@@ -9,6 +9,8 @@
     <title>ChatCode</title>
 </head>
 <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typescript/4.6.2/typescript.min.js"></script>
+
     <section class="container">
         <section class="login">
             <h2>ChatCode <br>Login</h2>
@@ -35,19 +37,26 @@
             </form>
 
             <!-- Tela de código -->
-            <div class="code-popup" id="code-popup">
-                <div class="code-popup__content">
-                    <!-- Botão de fechar -->
-                    <button class="code-popup__close-btn">&times;</button>
-                    <h2>Place Your Code</h2>
-                    <!-- Textarea para inserir código JavaScript -->
-                    <textarea class="code-popup__textarea" placeholder="Insira seu código JavaScript aqui"></textarea>
-                    <!-- Botão para executar o código inserido -->
-                    <button class="code-popup__button">Executar</button>
-                    <!-- Elemento para exibir a saída do console -->
-                    <div class="code-popup__console" id="code-popup-console"></div>
-                </div>
-            </div>
+           <!-- Selecione a tela quadrada -->
+<div class="code-popup" id="code-popup">
+    <div class="code-popup__content">
+        <!-- Botão de fechar -->
+        <button class="code-popup__close-btn">&times;</button>
+        <h2>Place Your Code</h2>
+        <select class="code-popup__language-selector">
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+        </select>
+        
+        <!-- Textarea para inserir código JavaScript ou TypeScript -->
+        <textarea class="code-popup__textarea" placeholder="Insira seu código aqui"></textarea>
+        <!-- Botão para executar o código inserido -->
+        <button class="code-popup__button">Executar</button>
+        <!-- Elemento para exibir a saída do console -->
+        <div class="code-popup__console" id="code-popup-console"></div>
+    </div>
+</div>
+
         </section>
     </section>
 
