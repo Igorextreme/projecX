@@ -119,18 +119,36 @@ codeButton.addEventListener("click", () => {
 
 // Selecione o textarea, o botão e o console
 const codeTextarea = document.querySelector(".code-popup__textarea");
-const codeButtonExecutar = document.querySelector(".code-popup__button");
 const codeConsole = document.getElementById("code-popup-console");
+const languageSelector = document.querySelector(".code-popup__language-selector");
+const codeButtonExecutar = document.querySelector(".code-popup__button");
 
 // Adicione um event listener para o clique no botão Executar
 codeButtonExecutar.addEventListener("click", () => {
     try {
         // Limpe a saída anterior do console
         codeConsole.textContent = "";
+
         // Obtenha o código inserido no textarea
         const code = codeTextarea.value;
-        // Execute o código usando eval
-        eval(code);
+
+        // Obtenha a linguagem selecionada pelo usuário
+        const selectedLanguage = languageSelector.value;
+
+        // Verifique a linguagem selecionada e execute o código correspondente
+        if (selectedLanguage === "javascript") {
+            // Se a linguagem selecionada for JavaScript, execute o código diretamente
+            eval(code);
+        } else if (selectedLanguage === "typescript") {
+            // Se a linguagem selecionada for TypeScript, compile o código para JavaScript e execute
+            // Compila o código TypeScript para JavaScript
+            const compiledCode = ts.transpile(code);
+            // Execute o código JavaScript compilado
+            eval(compiledCode);
+        } else {
+            // Se a linguagem selecionada não for reconhecida, exiba uma mensagem de erro
+            throw new Error("Linguagem de programação não suportada.");
+        }
     } catch (error) {
         // Em caso de erro, exiba o erro no console
         console.error(error);
@@ -152,7 +170,7 @@ const originalConsoleLog = console.log;
 console.log = function(message) {
     // Chame a função original console.log para exibir o log no console do navegador
     originalConsoleLog.apply(console, arguments);
-    
+
     // Adicione o log ao elemento codeConsole
     codeConsole.textContent += message + "\n";
 };
