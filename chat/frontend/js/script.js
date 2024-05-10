@@ -165,11 +165,15 @@ closeBtn.addEventListener("click", () => {
     codePopup.style.display = "none";
 });
 
+
 // Substitua a função console.log para exibir logs no elemento codeConsole
 const originalConsoleLog = console.log;
-console.log = function(message) {
+console.log = function() {
     // Chame a função original console.log para exibir o log no console do navegador
     originalConsoleLog.apply(console, arguments);
+
+    // Construa a mensagem combinando todos os argumentos separados por vírgula
+    const message = Array.from(arguments).join(", ");
 
     // Adicione o log ao elemento codeConsole
     codeConsole.textContent += message + "\n";
