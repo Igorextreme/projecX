@@ -222,16 +222,17 @@ body {
 }
 
 /* Adicione estilos para o console */
+
 .code-popup__console {
     margin-top: 20px;
     padding: 10px;
     background-color: #f4f4f4;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 5px;
     font-family: monospace;
     white-space: pre-wrap;
     max-height: 200px; /* Defina a altura máxima conforme necessário */
-    overflow-y: auto;
+    overflow-y: auto; /* Adicione uma barra de rolagem vertical quando necessário */
 }
 
 
