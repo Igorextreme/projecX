@@ -12,8 +12,10 @@
 }
 
 body {
-    background: url("../images/vertical.jpg");
-    color: #f2f2f2;
+    background: url("../images/background2.png");
+    color: white;
+    
+    background-size: cover;
 }
 
 .container {
@@ -32,7 +34,7 @@ body {
     padding: 20px;
 }
 
-.login > h2 {
+.login>h2 {
     text-align: center;
     font-weight: 600;
     font-size: 1.5rem;
@@ -66,13 +68,13 @@ body {
     border-radius: 5px;
     font-size: 0.85rem;
     font-weight: 700;
-    background-color: #ddd;
+    background-color: white;
     cursor: pointer;
     color: #121212;
 }
 
 .login__button:hover {
-    background-color: #fff;
+    background-color: #ddd;
 }
 
 .chat {
@@ -89,6 +91,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    word-wrap: break-word;
 }
 
 .chat__form {
@@ -121,7 +124,7 @@ body {
     cursor: pointer;
 }
 
-.chat__button > span {
+.chat__button>span {
     font-size: 1.8rem;
 }
 
@@ -130,9 +133,11 @@ body {
     background: none;
     color: #f2f2f2;
     cursor: pointer;
-    margin-right: 10px; /* Ajuste a margem conforme necessário */
+    margin-right: 10px;
+    /* Ajuste a margem conforme necessário */
 }
-.chat__messages > div {
+
+.chat__messages>div {
     padding: 10px;
     width: 100%;
     max-width: 250px;
@@ -165,17 +170,21 @@ body {
 
 /* Adicione estilos para a tela quadrada */
 .code-popup {
-    display: none; /* Inicialmente oculta */
+    display: none;
+    /* Inicialmente oculta */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto com transparência */
-    z-index: 999; /* Garante que a tela quadrada fique acima de outros elementos */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Fundo preto com transparência */
+    z-index: 999;
+    /* Garante que a tela quadrada fique acima de outros elementos */
 }
 
 .code-popup__content {
+    width: 25%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -201,7 +210,8 @@ body {
 /* Adicione estilos para o textarea */
 .code-popup__textarea {
     width: 80%;
-    height: 100px; /* Defina a altura conforme necessário */
+    height: 100px;
+    /* Defina a altura conforme necessário */
     padding: 10px;
     margin-top: 10px;
     border: 1px solid #ccc;
@@ -222,22 +232,22 @@ body {
 }
 
 /* Adicione estilos para o console */
-
 .code-popup__console {
     margin-top: 20px;
     padding: 10px;
     background-color: #f4f4f4;
-    border: 1px solid #000000;
+    border: 1px solid #ccc;
     border-radius: 5px;
     font-family: monospace;
     white-space: pre-wrap;
-    max-height: 200px; /* Defina a altura máxima conforme necessário */
-    overflow-y: auto; /* Adicione uma barra de rolagem vertical quando necessário */
+    max-height: 200px;
+    /* Defina a altura máxima conforme necessário */
+    overflow-y: auto;
 }
 
 
 /* Estilos para o botão de fechar */
-.code-popup__close-btn {
+.code-popup__close-button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -246,4 +256,78 @@ body {
     border: none;
     cursor: pointer;
     color: #ec0808;
+}
+
+@media only screen and (max-width: 600px) {
+
+    /* Estilos para telas menores, como smartphones */
+    .container {
+        padding: 20px;
+        /* Adicione algum espaçamento ao redor do conteúdo */
+    }
+
+    .login {
+        max-width: none;
+        /* Remova a largura máxima para ocupar a largura total */
+    }
+
+    .chat__form {
+        flex-direction: column;
+        /* Alinhe os elementos verticalmente */
+        padding: 10px;
+        /* Adicione algum espaçamento */
+    }
+
+    .chat__input {
+        margin-bottom: 10px;
+        /* Adicione algum espaçamento entre o campo de entrada e o botão de enviar */
+    }
+
+    .chat__messages {
+        padding: 10px;
+        /* Adicione algum espaçamento dentro do contêiner de mensagens */
+    }
+
+    .message--self,
+    .message--other {
+        max-width: 80%;
+        /* Limite a largura das mensagens para evitar que se estendam demais */
+    }
+
+    .chat__code-button {
+        margin-right: 0;
+        /* Remova a margem do botão de código */
+        margin-top: 10px;
+        /* Adicione algum espaçamento acima do botão de código */
+    }
+
+    /* Estilos para telas menores, como smartphones */
+    .code-popup__content {
+        width: 100vw;
+        /* Preenche a largura total da tela */
+        height: 100vh;
+        /* Preenche a altura total da tela */
+        margin: 0;
+        /* Remove qualquer margem */
+        padding: 20px;
+        /* Adicione algum espaçamento interno */
+        box-sizing: border-box;
+        /* Garante que padding não aumente o tamanho total */
+        display: flex;
+        /* Usa flexbox para alinhar o conteúdo */
+        flex-direction: column;
+        /* Empilha os elementos verticalmente */
+        justify-content: center;
+        /* Alinha verticalmente o conteúdo */
+        align-items: center;
+        /* Alinha horizontalmente o conteúdo */
+    }
+
+    .code-popup__input,
+    .code-popup__textarea {
+        width: calc(100% - 40px);
+        /* Adicione algum espaçamento interno */
+        max-width: 100%;
+        /* Garante que o campo não ultrapasse a largura da tela */
+    }
 }
