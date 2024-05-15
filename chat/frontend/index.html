@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="shortcut icon" href="../frontend/images/web-chat.png" type="image/x-icon">
     <title>ChatCode</title>
 </head>
+
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typescript/4.6.2/typescript.min.js"></script>
 
@@ -37,29 +40,34 @@
             </form>
 
             <!-- Tela de código -->
-           <!-- Selecione a tela quadrada -->
-<div class="code-popup" id="code-popup">
-    <div class="code-popup__content">
-        <!-- Botão de fechar -->
-        <button class="code-popup__close-btn">&times;</button>
-        <h2>Place Your Code</h2>
-        <select class="code-popup__language-selector">
-            <option value="javascript">JavaScript</option>
-            <option value="typescript">TypeScript</option>
-        </select>
-        
-        <!-- Textarea para inserir código JavaScript ou TypeScript -->
-        <textarea class="code-popup__textarea" placeholder="Insira seu código aqui"></textarea>
-        <!-- Botão para executar o código inserido -->
-        <button class="code-popup__button">Executar</button>
-        <!-- Elemento para exibir a saída do console -->
-        <div class="code-popup__console" id="code-popup-console"></div>
-    </div>
-</div>
+            <!-- Selecione a tela quadrada -->
+            <div class="code-popup" id="code-popup">
+                <div class="code-popup__content">
+                    <!-- Botão de fechar -->
+                    <button class="code-popup__close-button">❌</button>
+                    <h2>Coloque seu código</h2>
+                    <select class="code-popup__language-selector">
+                        <option value="javascript">JavaScript</option>
+                        <option value="typescript">TypeScript</option>
+                    </select>
+                    <!-- Contêiner para o textarea e a numeração das linhas -->
+                    <div class="code-popup__code-container">
+                        <!-- Numeração das linhas -->
+                        <div class="code-popup__line-numbers"></div>
+                        <!-- Textarea para inserir código JavaScript ou TypeScript -->
+                        <textarea class="code-popup__textarea" placeholder="Insira seu código aqui"></textarea>
+                    </div>
+                    <!-- Botão para executar o código inserido -->
+                    <button class="code-popup__button">Executar</button>
+                    <!-- Elemento para exibir a saída do console -->
+                    <div class="code-popup__console" id="code-popup-console"></div>
+                </div>
+            </div>
 
         </section>
     </section>
 
     <script src="./js/script.js"></script>
 </body>
+
 </html>
