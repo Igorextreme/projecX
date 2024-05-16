@@ -170,31 +170,34 @@ body {
 
 /* Adicione estilos para a tela quadrada */
 .code-popup {
-    display: none;
-    /* Inicialmente oculta */
-    position: fixed;
+    display: none; /* Inicialmente oculta */
+    position: fixed; /* Fixa a posição da tela */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    /* Fundo preto com transparência */
-    z-index: 999;
-    /* Garante que a tela quadrada fique acima de outros elementos */
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto com transparência */
+    z-index: 999; /* Garante que a tela quadrada fique acima de outros elementos */
+    overflow: auto; /* Adiciona uma barra de rolagem se necessário */
+    padding: 10px; /* Padding para garantir que o conteúdo não encoste nas bordas */
+    box-sizing: border-box; /* Inclui o padding na largura e altura totais */
 }
 
 .code-popup__content {
-    width: 25%;
+    max-width: 90%;
+    max-height: 90%;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 10px; /* Posição inicial no canto superior esquerdo */
+    left: 10px; /* Posição inicial no canto superior esquerdo */
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     color: #000;
+    overflow: auto; /* Adiciona uma barra de rolagem interna se necessário */
+    box-sizing: border-box; /* Inclui o padding na largura e altura totais */
 }
+
 
 /* Adicione estilos para o campo de texto */
 .code-popup__input {
@@ -258,6 +261,7 @@ body {
     color: #ec0808;
 }
 
+
 @media only screen and (max-width: 600px) {
     .container {
         padding: 10px; /* Reduz o padding para telas menores */
@@ -284,8 +288,10 @@ body {
 
     .chat__messages {
         padding: 10px; /* Adiciona algum espaço interno */
-        max-height: calc(100vh - 150px); /* Define uma altura máxima para a área de mensagens */
+        max-height: 50vh; /* Define uma altura máxima para a área de mensagens */
         overflow-y: auto; /* Adiciona uma barra de rolagem vertical */
+        width: 100%; /* Garante que a área de mensagens ocupe toda a largura */
+        box-sizing: border-box; /* Inclui o padding na largura total */
     }
 
     .message--self,
@@ -297,19 +303,17 @@ body {
         margin-top: 10px; /* Adiciona alguma margem acima */
     }
 
-     .code-popup__content {
-            width: 200%; /* Reduz a largura da tela de código */
-            max-width: 400px; /* Define a largura máxima da tela de código */
-            height: auto; /* Define a altura automática */
-            padding: 20px; /* Adiciona algum espaço interno */
-            overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
-            max-height: 90vh; /* Define a altura máxima como 40% da altura da tela */
-        }
-    /* Outros estilos existentes */
+    .code-popup__content {
+        width: 90%; /* Define a largura da tela de código como 90% da tela */
+        max-width: 400px; /* Define a largura máxima da tela de código */
+        height: auto; /* Define a altura automática */
+        padding: 20px; /* Adiciona algum espaço interno */
+        overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+        max-height: 90vh; /* Define a altura máxima como 90% da altura da tela */
+        box-sizing: border-box; /* Inclui o padding na largura e altura totais */
+    }
 
-
-
-    
+    /* Estilos para inputs e botões na tela de código */
     .code-popup__input,
     .code-popup__textarea {
         width: calc(50% - 5px); /* Divide a largura igualmente */
@@ -320,4 +324,70 @@ body {
     .code-popup__button {
         width: calc(50% - 5px); /* Divide a largura igualmente */
     }
+}
+
+/* Outros estilos existentes */
+
+
+/* Adicione este estilo ao seu arquivo style.css */
+
+/* Estilo para as imagens no chat */
+/* Estilo padrão para imagens dentro das mensagens do chat */
+.chat__message-image {
+    max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+    height: auto; /* Mantém a proporção original da imagem */
+    border-radius: 8px; /* Borda arredondada */
+    margin-bottom: 10px; /* Espaçamento inferior entre as imagens */
+    cursor: pointer; /* Cursor de ponteiro para indicar que a imagem é clicável */
+}
+
+/* Estilo para a imagem em tela cheia */
+.chat__image-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fundo escurecido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Coloca a imagem acima de todos os outros elementos */
+}
+
+/* Estilo para a imagem em si dentro do contêiner de tela cheia */
+.chat__image-fullscreen img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+}
+
+/* Estilos para as mensagens enviadas pelo usuário */
+.message--self {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Alinha as mensagens à direita */
+}
+
+/* Estilos para as mensagens enviadas por outros usuários */
+.message--other {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha as mensagens à esquerda */
+}
+
+/* Estilos para o contêiner da imagem */
+.message--image-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo para a mensagem que contém uma imagem enviada pelo usuário */
+.message--self .chat__message-image {
+    align-self: flex-end; /* Alinha a imagem à direita */
+}
+
+/* Estilo para a mensagem que contém uma imagem recebida de outro usuário */
+.message--other .chat__message-image {
+    align-self: flex-start; /* Alinha a imagem à esquerda */
 }
