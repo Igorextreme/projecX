@@ -297,22 +297,18 @@ body {
         margin-top: 10px; /* Adiciona alguma margem acima */
     }
 
-    @media only screen and (max-width: 600px) {
-        /* Outros estilos existentes */
-    
-   .code-popup__textarea {
-        width: 40vw; /* Define a largura como 40% da largura da viewport */
+    .code-popup__textarea {
+        width: 90vw; /* Define a largura como 90% da largura da viewport */
         height: 40vh; /* Define a altura como 40% da altura da viewport */
         max-height: 40vh; /* Garante que a altura não exceda 40% da altura da viewport */
-    }
- .code-popup__textarea {
-        width: 40vw; /* Define a largura como 40% da largura da viewport */
-        height: 40vh; /* Define a altura como 40% da altura da viewport */
-        max-height: 40vh; /* Garante que a altura não exceda 40% da altura da viewport */
+        overflow-x: auto; /* Adiciona uma barra de rolagem horizontal quando necessário */
         overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
     }
-        /* Outros estilos existentes */
-    
+
+    /* Outros estilos existentes */
+
+
+
     
     .code-popup__input,
     .code-popup__textarea {
