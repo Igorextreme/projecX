@@ -10,27 +10,24 @@ wss.on("connection", (ws) => {
     ws.on("error", console.error);
 
     ws.on("message", (data) => {
-        const message = data.toString();
+        const message = JSON.parse(data);
 
-        // Se a mensagem começa com "/code", trata-se de um comando para executar código
-        if (message.startsWith("/code")) {
-            const code = message.slice(6); // Remove o prefixo "/code "
-
-            // Executa o código
-            exec(code, (error, stdout, stderr) => {
-                if (error) {
-                    ws.send(`Erro ao executar o código: ${error.message}`);
-                    return;
-                }
-                if (stderr) {
-                    ws.send(`Erro ao executar o código: ${stderr}`);
-                    return;
-                }
-                ws.send(`Saída do código: ${stdout}`);
-            });
+        // Verifica se a mensagem é um objeto
+        if (typeof message === "object") {
+            // Se a mensagem for uma imagem, envie-a para todos os clientes conectados
+            if (message.type === "image") {
+                wss.clients.forEach((client) => {
+                    if (client !== ws && client.readyState === WebSocket.OPEN) {
+                        client.send(JSON.stringify(message));
+                    }
+                });
+            } else {
+                // Caso contrário, encaminha a mensagem para todos os clientes
+                wss.clients.forEach((client) => client.send(JSON.stringify(message)));
+            }
         } else {
-            // Caso contrário, encaminha a mensagem para todos os clientes
-            wss.clients.forEach((client) => client.send(message));
+            // Se a mensagem não for um objeto, encaminha-a para todos os clientes
+            wss.clients.forEach((client) => client.send(data));
         }
     });
 
