@@ -284,7 +284,7 @@ body {
 
     .chat__messages {
         padding: 10px; /* Adiciona algum espaço interno */
-        max-height: calc(100vh - 100px); /* Define uma altura máxima para a área de mensagens */
+        max-height: calc(100vh - 150px); /* Define uma altura máxima para a área de mensagens */
         overflow-y: auto; /* Adiciona uma barra de rolagem vertical */
     }
 
