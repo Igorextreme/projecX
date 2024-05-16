@@ -300,15 +300,15 @@ body {
     @media only screen and (max-width: 600px) {
         /* Outros estilos existentes */
     
-       .code-popup__content {
-            width: 90%; /* Reduz a largura da tela de código */
-            max-width: 400px; /* Define a largura máxima da tela de código */
-            height: calc(100vh - 20px); /* Define a altura máxima da tela de código */
-            padding: 20px; /* Adiciona algum espaço interno */
-            resize: both; /* Permite redimensionamento vertical e horizontal */
-            overflow: auto; /* Adiciona barras de rolagem quando necessário */
-        }
-    
+     .code-popup__content {
+        width: 90%; /* Reduz a largura da tela de código */
+        max-width: 400px; /* Define a largura máxima da tela de código */
+        height: auto; /* Define a altura automática */
+        padding: 20px; /* Adiciona algum espaço interno */
+        overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+        max-height: 40vh; /* Define a altura máxima como 40% da altura da tela */
+    }
+
         /* Outros estilos existentes */
     }
     
