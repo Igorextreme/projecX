@@ -1,4 +1,3 @@
-
 // login elements
 const login = document.querySelector(".login");
 const loginForm = login.querySelector(".login__form");
@@ -114,12 +113,85 @@ const sendMessage = (event) => {
     websocket.send(JSON.stringify(message)); // Envia a mensagem para o servidor WebSocket
 };
 
+// Função para lidar com o envio de imagens
+const sendImage = (event) => {
+    event.preventDefault();
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*"; // Aceita apenas arquivos de imagem
+
+    input.onchange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const imageData = event.target.result;
+                const message = {
+                    userId: user.id,
+                    userName: user.name,
+                    userColor: user.color,
+                    content: imageData,
+                    isImage: true // Marca a mensagem como uma imagem
+                };
+                websocket.send(JSON.stringify(message)); // Envia a imagem para o servidor WebSocket
+            };
+        }
+    };
+
+    input.click();
+};
+
+// Adicione um event listener para o clique no botão Image
+const imageButton = document.querySelector(".chat__image-button");
+imageButton.addEventListener("click", sendImage);
+
+
+
 // Função para processar as mensagens recebidas
 const processMessage = ({ data }) => {
-    const { userId, userName, userColor, content } = JSON.parse(data);
+    const { userId, userName, userColor, content, isImage } = JSON.parse(data);
 
     let message;
 
+    if (isImage) {
+        // Se a mensagem é uma imagem, crie um contêiner de imagem
+        const imageContainer = document.createElement("div");
+        imageContainer.classList.add("message--image-container");
+
+        const imageElement = document.createElement("img");
+        imageElement.src = content; // Defina o atributo src da imagem para a URL da imagem base64
+        imageElement.classList.add("chat__message-image");
+
+        // Adiciona evento de clique para exibir a imagem em tela cheia
+        imageElement.addEventListener("click", () => {
+            const fullscreenDiv = document.createElement("div");
+            fullscreenDiv.classList.add("chat__image-fullscreen");
+
+            const fullscreenImage = document.createElement("img");
+            fullscreenImage.src = content;
+
+            fullscreenDiv.appendChild(fullscreenImage);
+            document.body.appendChild(fullscreenDiv);
+
+            // Adiciona evento para sair da tela cheia ao clicar fora da imagem
+            fullscreenDiv.addEventListener("click", () => {
+                document.body.removeChild(fullscreenDiv);
+            });
+        });
+
+        imageContainer.appendChild(imageElement);
+
+        if (userId === user.id) {
+            imageContainer.classList.add("message--self");
+        } else {
+            imageContainer.classList.add("message--other");
+        }
+
+
+        message = imageContainer;
+    }  else {
     const lowerContent = content.toLowerCase().trim();
     if (lowerContent.startsWith("/bot")) {
         // Processa comando do bot
@@ -132,10 +204,14 @@ const processMessage = ({ data }) => {
         message = userId === user.id ? createMessageSelfElement(content, userName) :
             createMessageOtherElement(content, userName, userColor);
     }
+}
 
     chatMessages.appendChild(message);
 
     scrollScreen();
+
+    const imageButton = document.querySelector(".chat__image-button");
+imageButton.addEventListener("click", sendImage);
 };
 
 // Função para processar mensagens do bot
@@ -276,3 +352,5 @@ console.log = function() {
     // Adicione o log ao elemento codeConsole
     codeConsole.textContent += message + "\n";
 };
+
+
