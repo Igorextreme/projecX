@@ -259,75 +259,65 @@ body {
 }
 
 @media only screen and (max-width: 600px) {
-
-    /* Estilos para telas menores, como smartphones */
     .container {
-        padding: 20px;
-        /* Adicione algum espaçamento ao redor do conteúdo */
+        padding: 10px; /* Reduz o padding para telas menores */
     }
 
     .login {
-        max-width: none;
-        /* Remova a largura máxima para ocupar a largura total */
+        max-width: none; /* Remove a largura máxima */
+    }
+
+    .chat {
+        flex-direction: column-reverse; /* Inverte a ordem dos elementos no contêiner */
+        align-items: center; /* Alinha os itens no centro do contêiner */
     }
 
     .chat__form {
-        flex-direction: column;
-        /* Alinhe os elementos verticalmente */
-        padding: 10px;
-        /* Adicione algum espaçamento */
+        flex-direction: row; /* Mantém os elementos lado a lado */
+        padding: 10px; /* Adiciona algum espaço interno */
+        margin-top: 10px; /* Adiciona um pequeno espaço entre a área de mensagens e o formulário */
     }
 
     .chat__input {
-        margin-bottom: 10px;
-        /* Adicione algum espaçamento entre o campo de entrada e o botão de enviar */
+        margin-right: 10px; /* Adiciona espaço à direita do campo de entrada */
     }
 
     .chat__messages {
-        padding: 10px;
-        /* Adicione algum espaçamento dentro do contêiner de mensagens */
+        padding: 10px; /* Adiciona algum espaço interno */
+        max-height: calc(100vh - 100px); /* Define uma altura máxima para a área de mensagens */
+        overflow-y: auto; /* Adiciona uma barra de rolagem vertical */
     }
 
     .message--self,
     .message--other {
-        max-width: 80%;
-        /* Limite a largura das mensagens para evitar que se estendam demais */
+        max-width: 80%; /* Limita a largura das mensagens */
     }
 
     .chat__code-button {
-        margin-right: 0;
-        /* Remova a margem do botão de código */
-        margin-top: 10px;
-        /* Adicione algum espaçamento acima do botão de código */
+        margin-top: 10px; /* Adiciona alguma margem acima */
     }
 
-    /* Estilos para telas menores, como smartphones */
-    .code-popup__content {
-        width: 100vw;
-        /* Preenche a largura total da tela */
-        height: 100vh;
-        /* Preenche a altura total da tela */
-        margin: 0;
-        /* Remove qualquer margem */
-        padding: 20px;
-        /* Adicione algum espaçamento interno */
-        box-sizing: border-box;
-        /* Garante que padding não aumente o tamanho total */
-        display: flex;
-        /* Usa flexbox para alinhar o conteúdo */
-        flex-direction: column;
-        /* Empilha os elementos verticalmente */
-        justify-content: center;
-        /* Alinha verticalmente o conteúdo */
-        align-items: center;
-        /* Alinha horizontalmente o conteúdo */
+    @media only screen and (max-width: 600px) {
+        /* Outros estilos existentes */
+    
+        .code-popup__content {
+            width: 90%; /* Reduz a largura da tela de código */
+            max-width: 400px; /* Define a largura máxima da tela de código */
+            height: calc(100vh - 20px); /* Define a altura máxima da tela de código */
+            padding: 20px; /* Adiciona algum espaço interno */
+        }
+    
+        /* Outros estilos existentes */
     }
-
+    
     .code-popup__input,
     .code-popup__textarea {
-        width: calc(100% - 40px);
-        /* Adicione algum espaçamento interno */
-        max-width: 100%;
-        /* Garante que o campo não ultrapasse a largura da tela */
+        width: calc(50% - 5px); /* Divide a largura igualmente */
+        max-width: 100%; /* Garante que não ultrapasse a largura máxima da tela */
+        margin-right: 10px; /* Adiciona espaço à direita */
+    }
+
+    .code-popup__button {
+        width: calc(50% - 5px); /* Divide a largura igualmente */
     }
 }
