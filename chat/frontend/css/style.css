@@ -303,7 +303,7 @@ body {
             height: auto; /* Define a altura automática */
             padding: 20px; /* Adiciona algum espaço interno */
             overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
-            max-height: 40vh; /* Define a altura máxima como 40% da altura da tela */
+            max-height: 90vh; /* Define a altura máxima como 40% da altura da tela */
         }
     /* Outros estilos existentes */
 
