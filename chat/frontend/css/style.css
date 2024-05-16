@@ -303,7 +303,7 @@ body {
         .code-popup__content {
             width: 90%; /* Reduz a largura da tela de código */
             max-width: 400px; /* Define a largura máxima da tela de código */
-            height: calc(100vh - 30px); /* Define a altura máxima da tela de código */
+            height: calc(100vh - 40px); /* Define a altura máxima da tela de código */
             padding: 20px; /* Adiciona algum espaço interno */
         }
     
