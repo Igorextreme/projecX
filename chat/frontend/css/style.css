@@ -280,10 +280,13 @@ body {
         flex-direction: row; /* Mantém os elementos lado a lado */
         padding: 10px; /* Adiciona algum espaço interno */
         margin-top: 10px; /* Adiciona um pequeno espaço entre a área de mensagens e o formulário */
+        width: 100%; /* Garante que o formulário ocupe toda a largura */
+        box-sizing: border-box; /* Inclui o padding na largura total */
     }
 
     .chat__input {
         margin-right: 10px; /* Adiciona espaço à direita do campo de entrada */
+        flex: 1; /* Permite que o campo de entrada ocupe o máximo de espaço possível */
     }
 
     .chat__messages {
@@ -297,6 +300,7 @@ body {
     .message--self,
     .message--other {
         max-width: 80%; /* Limita a largura das mensagens */
+        word-wrap: break-word; /* Quebra a palavra se for muito longa */
     }
 
     .chat__code-button {
@@ -326,10 +330,6 @@ body {
     }
 }
 
-/* Outros estilos existentes */
-
-
-/* Adicione este estilo ao seu arquivo style.css */
 
 /* Estilo para as imagens no chat */
 /* Estilo padrão para imagens dentro das mensagens do chat */
