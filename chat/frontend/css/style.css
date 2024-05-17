@@ -295,12 +295,44 @@ body {
         overflow-y: auto; /* Adiciona uma barra de rolagem vertical */
         width: 100%; /* Garante que a área de mensagens ocupe toda a largura */
         box-sizing: border-box; /* Inclui o padding na largura total */
+        scroll-behavior: smooth; /* Adiciona rolagem suave */
     }
 
     .message--self,
     .message--other {
         max-width: 80%; /* Limita a largura das mensagens */
         word-wrap: break-word; /* Quebra a palavra se for muito longa */
+    }
+
+    .message--image-container {
+        max-width: 80%; /* Limita a largura das imagens */
+        overflow: hidden; /* Garante que a imagem não ultrapasse os limites */
+    }
+
+    .chat__message-image {
+        max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+        height: auto; /* Mantém a proporção original da imagem */
+        border-radius: 8px; /* Borda arredondada */
+        margin-bottom: 10px; /* Espaçamento inferior entre as imagens */
+        cursor: pointer; /* Cursor de ponteiro para indicar que a imagem é clicável */
+    }
+
+    .chat__image-fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .chat__image-fullscreen img {
+        max-width: 90%;
+        max-height: 90%;
     }
 
     .chat__code-button {
@@ -329,6 +361,8 @@ body {
         width: calc(50% - 5px); /* Divide a largura igualmente */
     }
 }
+
+/* Outros estilos existentes */
 
 
 /* Estilo para as imagens no chat */
