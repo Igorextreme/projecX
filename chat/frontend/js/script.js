@@ -10,12 +10,7 @@ const chatInput = chat.querySelector(".chat__input");
 const chatMessages = chat.querySelector(".chat__messages");
 
 const colors = [
-    "cadetblue",
-    "darkgoldenrod",
-    "cornflowerblue",
-    "darkkhaki",
-    "hotpink",
-    "gold"
+    "cadetblue", "darkgoldenrod", "cornflowerblue", "darkkhaki", "hotpink", "gold"
 ];
 
 const user = { id: "", name: "", color: "" };
@@ -27,21 +22,15 @@ const createMessageSelfElement = (content, userName) => {
     const div = document.createElement("div");
     const span = document.createElement("span");
 
-    // Adiciona a classe CSS para estilizar a mensagem
     div.classList.add("message--self");
-
-    // Cria um span para exibir o nome do usuário
     span.classList.add("message--sender");
-    span.style.color = "gray"; // Define a cor do nome do usuário
-    span.textContent = userName; // Define o nome do usuário
-
-    // Adiciona o span com o nome do usuário ao balão de mensagem
+    span.style.color = "gray";
+    span.textContent = userName;
     div.appendChild(span);
 
-    // Cria um span para exibir o conteúdo da mensagem
     const messageContent = document.createElement("span");
-    messageContent.textContent = content; // Define o conteúdo da mensagem
-    div.appendChild(messageContent); // Adiciona o span com o conteúdo da mensagem ao balão de mensagem
+    messageContent.textContent = content;
+    div.appendChild(messageContent);
 
     return div;
 };
@@ -51,22 +40,20 @@ const createMessageOtherElement = (content, sender, senderColor) => {
     const span = document.createElement("span");
 
     div.classList.add("message--other");
-
     span.classList.add("message--sender");
     span.style.color = senderColor;
+    span.textContent = sender;
 
     div.appendChild(span);
 
-    span.innerHTML = sender;
-    div.innerHTML += content;
+    const messageContent = document.createElement("span");
+    messageContent.innerHTML = content;
+    div.appendChild(messageContent);
 
     return div;
 };
 
-const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-};
+const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
 const scrollScreen = () => {
     window.scrollTo({
@@ -74,6 +61,11 @@ const scrollScreen = () => {
         behavior: "smooth"
     });
 };
+
+const scrollChatToBottom = () => {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+};
+
 
 const responses = {
     "/bot": "Olá sou o Robozão dos Cria de ADS, posso ajudar com alguns dos comandos abaixo:<br>" +
@@ -90,9 +82,7 @@ const responses = {
 };
 
 // Função para processar os comandos
-function processCommand(command) {
-    return responses[command] || "Comando não reconhecido.";
-}
+const processCommand = (command) => responses[command] || "Comando não reconhecido.";
 
 // Função para enviar uma mensagem de chat
 const sendMessage = (event) => {
@@ -110,7 +100,12 @@ const sendMessage = (event) => {
 
     chatInput.value = ""; // Limpa o campo de entrada de mensagem
 
-    websocket.send(JSON.stringify(message)); // Envia a mensagem para o servidor WebSocket
+    if (websocket.readyState === WebSocket.OPEN) {
+        websocket.send(JSON.stringify(message)); // Envia a mensagem para o servidor WebSocket
+    } else {
+        console.error("WebSocket não está conectado.");
+    }
+    scrollChatToBottom();
 };
 
 // Função para lidar com o envio de imagens
@@ -135,19 +130,22 @@ const sendImage = (event) => {
                     content: imageData,
                     isImage: true // Marca a mensagem como uma imagem
                 };
-                websocket.send(JSON.stringify(message)); // Envia a imagem para o servidor WebSocket
+                if (websocket.readyState === WebSocket.OPEN) {
+                    websocket.send(JSON.stringify(message)); // Envia a imagem para o servidor WebSocket
+                } else {
+                    console.error("WebSocket não está conectado.");
+                }
             };
         }
     };
 
     input.click();
+    scrollChatToBottom();
 };
 
 // Adicione um event listener para o clique no botão Image
 const imageButton = document.querySelector(".chat__image-button");
 imageButton.addEventListener("click", sendImage);
-
-
 
 // Função para processar as mensagens recebidas
 const processMessage = ({ data }) => {
@@ -189,62 +187,21 @@ const processMessage = ({ data }) => {
             imageContainer.classList.add("message--other");
         }
 
-
         message = imageContainer;
-    }  else {
-    const lowerContent = content.toLowerCase().trim();
-    if (lowerContent.startsWith("/bot")) {
-        // Processa comando do bot
-        message = createMessageOtherElement(processCommand(lowerContent), "Robozão dos Cria de ADS", "gray");
-    } else if (responses[lowerContent]) {
-        // Processa resposta automática
-        message = createMessageOtherElement(responses[lowerContent], "Robozão dos Cria de ADS", "gray");
     } else {
-        // Processa mensagem normal
-        message = userId === user.id ? createMessageSelfElement(content, userName) :
-            createMessageOtherElement(content, userName, userColor);
+        const lowerContent = content.toLowerCase().trim();
+        if (lowerContent.startsWith("/bot")) {
+            message = createMessageOtherElement(processCommand(lowerContent), "Robozão dos Cria de ADS", "gray");
+        } else {
+            message = userId === user.id ?
+                createMessageSelfElement(content, userName) :
+                createMessageOtherElement(content, userName, userColor);
+        }
     }
-}
 
     chatMessages.appendChild(message);
-
     scrollScreen();
-
-    const imageButton = document.querySelector(".chat__image-button");
-imageButton.addEventListener("click", sendImage);
-};
-
-// Função para processar mensagens do bot
-const processBotMessage = (content) => {
-    let message;
-
-    if (responses[content]) {
-        // Responde com a mensagem do bot
-        message = createMessageOtherElement(responses[content], "Robozão dos Cria de ADS", "gray");
-        chatMessages.appendChild(message);
-        scrollScreen();
-    } else {
-        // Comando do bot inválido
-        console.error("Comando do bot inválido:", content);
-    }
-};
-
-// Função para processar mensagens do usuário
-const processUserMessage = (userId, userName, userColor, content) => {
-    // Verifica se é um comando do usuário
-    if (content.startsWith("/")) {
-        // Comando inválido
-        const invalidCommandMessage = "Comando inválido. Use '/bot' para interagir com o bot.";
-        const invalidCommand = createMessageOtherElement(invalidCommandMessage, "Robozão dos Cria de ADS", "gray");
-        chatMessages.appendChild(invalidCommand);
-        scrollScreen();
-    } else {
-        // Mensagem normal do usuário
-        const message = userId === user.id ? createMessageSelfElement(content, userName) :
-            createMessageOtherElement(content, userName, userColor);
-        chatMessages.appendChild(message);
-        scrollScreen();
-    }
+    scrollChatToBottom();
 };
 
 // Lida com o evento de login
@@ -280,15 +237,12 @@ loginForm.addEventListener("submit", (event) => {
 // Lida com o envio de mensagens de chat
 chatForm.addEventListener("submit", sendMessage);
 
-
 // Adicione um event listener para o clique no botão Code
 const codeButton = document.querySelector(".chat__code-button");
 const codePopup = document.querySelector(".code-popup");
 
 codeButton.addEventListener("click", () => {
-    // Exiba a tela quadrada quando o botão Code for clicado
     codePopup.style.display = "block";
-    // Limpe o console quando a tela de código for aberta
     codeConsole.textContent = "";
 });
 
@@ -301,56 +255,36 @@ const codeButtonExecutar = document.querySelector(".code-popup__button");
 // Adicione um event listener para o clique no botão Executar
 codeButtonExecutar.addEventListener("click", () => {
     try {
-        // Limpe a saída anterior do console
-        codeConsole.textContent = "";
+        codeConsole.innerHTML = "";
 
-        // Obtenha o código inserido no textarea
         const code = codeTextarea.value;
-
-        // Obtenha a linguagem selecionada pelo usuário
         const selectedLanguage = languageSelector.value;
 
-        // Verifique a linguagem selecionada e execute o código correspondente
         if (selectedLanguage === "javascript") {
-            // Se a linguagem selecionada for JavaScript, execute o código diretamente
             eval(code);
         } else if (selectedLanguage === "typescript") {
-            // Se a linguagem selecionada for TypeScript, compile o código para JavaScript e execute
-            // Compila o código TypeScript para JavaScript
             const compiledCode = ts.transpile(code);
-            // Execute o código JavaScript compilado
             eval(compiledCode);
         } else {
-            // Se a linguagem selecionada não for reconhecida, exiba uma mensagem de erro
             throw new Error("Linguagem de programação não suportada.");
         }
     } catch (error) {
-        // Em caso de erro, exiba o erro no console
         console.error(error);
-        codeConsole.textContent = error.toString();
+        codeConsole.innerHTML += "<span style='color: red;'>" + error.toString() + "</span><br>";
     }
 });
 
 // Selecione o botão de fechar
 const closeBtn = document.querySelector(".code-popup__close-button");
 
-// Adicione um event listener para o clique no botão de fechar
 closeBtn.addEventListener("click", () => {
-    // Oculte a janela quando o botão de fechar for clicado
     codePopup.style.display = "none";
 });
 
 // Substitua a função console.log para exibir logs no elemento codeConsole
 const originalConsoleLog = console.log;
 console.log = function() {
-    // Chame a função original console.log para exibir o log no console do navegador
     originalConsoleLog.apply(console, arguments);
-
-    // Construa a mensagem combinando todos os argumentos separados por vírgula
     const message = Array.from(arguments).join(",");
-
-    // Adicione o log ao elemento codeConsole
     codeConsole.textContent += message + "\n";
 };
-
-
