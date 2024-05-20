@@ -171,210 +171,121 @@ body {
 /* Adicione estilos para a tela quadrada */
 .code-popup {
     display: none; /* Inicialmente oculta */
-    position: fixed; /* Fixa a posição da tela */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Fundo preto com transparência */
-    z-index: 999; /* Garante que a tela quadrada fique acima de outros elementos */
-    overflow: auto; /* Adiciona uma barra de rolagem se necessário */
-    padding: 10px; /* Padding para garantir que o conteúdo não encoste nas bordas */
-    box-sizing: border-box; /* Inclui o padding na largura e altura totais */
+    position: fixed; /* Posicionamento fixo */
+    top: 50%; /* Centraliza verticalmente */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translate(-50%, -50%); /* Ajuste para centralização */
+    background-color: #000; /* Fundo preto */
+    color: #fff; /* Texto branco */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    width: 80%; /* Largura da janela */
+    max-height: 80%; /* Altura máxima da janela */
+    overflow-y: auto; /* Adiciona barra de rolagem vertical */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra */
+    font-family: "Courier New", Courier, monospace; /* Fonte monospace */
 }
 
-.code-popup__content {
-    max-width: 90%;
-    max-height: 90%;
-    position: absolute;
-    top: 10px; /* Posição inicial no canto superior esquerdo */
-    left: 10px; /* Posição inicial no canto superior esquerdo */
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    color: #000;
-    overflow: auto; /* Adiciona uma barra de rolagem interna se necessário */
-    box-sizing: border-box; /* Inclui o padding na largura e altura totais */
-}
-
-
-/* Adicione estilos para o campo de texto */
-.code-popup__input {
-    width: 80%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-/* Adicione estilos para o textarea */
 .code-popup__textarea {
-    width: 80%;
-    height: 100px;
-    /* Defina a altura conforme necessário */
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
+    width: 100%; /* Largura total */
+    height: 200px; /* Altura fixa */
+    background-color: #000; /* Fundo preto */
+    color: #fff; /* Texto branco */
+    border: 1px solid #333; /* Borda */
+    padding: 10px; /* Espaçamento interno */
+    font-family: "Courier New", Courier, monospace; /* Fonte monospace */
 }
 
-/* Adicione estilos para o botão */
 .code-popup__button {
-    padding: 10px 20px;
-    margin-top: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: #333; /* Fundo escuro */
+    color: #fff; /* Texto branco */
+    border: none; /* Sem borda */
+    padding: 10px 20px; /* Espaçamento interno */
+    cursor: pointer; /* Cursor de ponteiro */
+    margin-top: 10px; /* Margem superior */
 }
 
-/* Adicione estilos para o console */
-.code-popup__console {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f4f4f4;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: monospace;
-    white-space: pre-wrap;
-    max-height: 200px;
-    /* Defina a altura máxima conforme necessário */
-    overflow-y: auto;
+.code-popup__button:hover {
+    background-color: #555; /* Fundo mais claro ao passar o mouse */
 }
 
-
-/* Estilos para o botão de fechar */
 .code-popup__close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: #ec0808;
+    background-color: #900; /* Fundo vermelho escuro */
+    color: #fff; /* Texto branco */
+    border: none; /* Sem borda */
+    padding: 10px 20px; /* Espaçamento interno */
+    cursor: pointer; /* Cursor de ponteiro */
+    position: absolute; /* Posicionamento absoluto */
+    top: 10px; /* Margem superior */
+    right: 10px; /* Margem à direita */
+}
+
+.code-popup__close-button:hover {
+    background-color: #c00; /* Fundo vermelho mais claro ao passar o mouse */
+}
+
+.code-popup__language-selector {
+    background-color: #000; /* Fundo preto */
+    color: #fff; /* Texto branco */
+    border: 1px solid #333; /* Borda */
+    padding: 5px; /* Espaçamento interno */
+    margin-top: 10px; /* Margem superior */
+    width: 100%; /* Largura total */
+}
+
+#code-popup-console {
+    background-color: #000; /* Fundo preto */
+    color: #fff; /* Texto branco */
+    border: 1px solid #333; /* Borda */
+    padding: 10px; /* Espaçamento interno */
+    margin-top: 10px; /* Margem superior */
+    width: 100%; /* Largura total */
+    height: 100px; /* Altura fixa */
+    overflow-y: auto; /* Barra de rolagem vertical */
+}
+
+/* Estilos para sintaxe destacada */
+.code-popup__textarea .keyword {
+    color: #569cd6; /* Azul para palavras-chave */
+}
+
+.code-popup__textarea .string {
+    color: #d69d85; /* Bege para strings */
+}
+
+.code-popup__textarea .number {
+    color: #b5cea8; /* Verde para números */
+}
+
+.code-popup__textarea .operator {
+    color: #d4d4d4; /* Branco para operadores */
+}
+
+.code-popup__textarea .brace {
+    color: #ce9178; /* Laranja para chaves e colchetes */
 }
 
 
-@media only screen and (max-width: 600px) {
-    .container {
-        padding: 10px; /* Reduz o padding para telas menores */
-    }
-
-    .login {
-        max-width: none; /* Remove a largura máxima */
-    }
-
-    .chat {
-        flex-direction: column-reverse; /* Inverte a ordem dos elementos no contêiner */
-        align-items: center; /* Alinha os itens no centro do contêiner */
-    }
-
-    .chat__form {
-        flex-direction: row; /* Mantém os elementos lado a lado */
-        padding: 10px; /* Adiciona algum espaço interno */
-        margin-top: 10px; /* Adiciona um pequeno espaço entre a área de mensagens e o formulário */
-        width: 100%; /* Garante que o formulário ocupe toda a largura */
-        box-sizing: border-box; /* Inclui o padding na largura total */
-    }
-
-    .chat__input {
-        margin-right: 10px; /* Adiciona espaço à direita do campo de entrada */
-        flex: 1; /* Permite que o campo de entrada ocupe o máximo de espaço possível */
-    }
-
-    .chat__messages {
-        padding: 10px; /* Adiciona algum espaço interno */
-        max-height: 80vh; /* Define uma altura máxima para a área de mensagens */
-        overflow-y: auto; /* Adiciona uma barra de rolagem vertical */
-        width: 100%; /* Garante que a área de mensagens ocupe toda a largura */
-        box-sizing: border-box; /* Inclui o padding na largura total */
-        scroll-behavior: smooth; /* Adiciona rolagem suave */
-    }
-
-    .message--self,
-    .message--other {
-        max-width: 80%; /* Limita a largura das mensagens */
-        word-wrap: break-word; /* Quebra a palavra se for muito longa */
-    }
-
-    .message--image-container {
-        max-width: 80%; /* Limita a largura das imagens */
-        overflow: hidden; /* Garante que a imagem não ultrapasse os limites */
-    }
-
-    .chat__message-image {
-        max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
-        height: auto; /* Mantém a proporção original da imagem */
-        border-radius: 8px; /* Borda arredondada */
-        margin-bottom: 10px; /* Espaçamento inferior entre as imagens */
-        cursor: pointer; /* Cursor de ponteiro para indicar que a imagem é clicável */
-    }
-
-    .chat__image-fullscreen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .chat__image-fullscreen img {
-        max-width: 90%;
-        max-height: 90%;
-    }
-
-    .chat__code-button {
-        margin-top: 10px; /* Adiciona alguma margem acima */
-    }
-
-    .code-popup__content {
-        width: 90%; /* Define a largura da tela de código como 90% da tela */
-        max-width: 400px; /* Define a largura máxima da tela de código */
-        height: auto; /* Define a altura automática */
-        padding: 20px; /* Adiciona algum espaço interno */
-        overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
-        max-height: 90vh; /* Define a altura máxima como 90% da altura da tela */
-        box-sizing: border-box; /* Inclui o padding na largura e altura totais */
-    }
-
-    /* Estilos para inputs e botões na tela de código */
-    .code-popup__input,
-    .code-popup__textarea {
-        width: calc(50% - 5px); /* Divide a largura igualmente */
-        max-width: 100%; /* Garante que não ultrapasse a largura máxima da tela */
-        margin-right: 10px; /* Adiciona espaço à direita */
-    }
-
-    .code-popup__button {
-        width: calc(50% - 5px); /* Divide a largura igualmente */
-    }
+.message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Espaçamento entre as mensagens */
+    min-height: 100px; /* Altura mínima para o contêiner da mensagem */
 }
 
-/* Outros estilos existentes */
+.message__image-container {
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner da mensagem */
+    overflow: hidden; /* Oculta qualquer parte da imagem que ultrapasse os limites do contêiner */
+}
 
 
-/* Estilo para as imagens no chat */
-/* Estilo padrão para imagens dentro das mensagens do chat */
+
+
 .chat__message-image {
-    max-width: 100%; /* Garante que a imagem não ultrapasse o contêiner */
+    width: 100%; /* Ajusta a largura da imagem para preencher o contêiner */
     height: auto; /* Mantém a proporção original da imagem */
     border-radius: 8px; /* Borda arredondada */
-    margin-bottom: 10px; /* Espaçamento inferior entre as imagens */
-    cursor: pointer; /* Cursor de ponteiro para indicar que a imagem é clicável */
 }
-
 /* Estilo para a imagem em tela cheia */
 .chat__image-fullscreen {
     position: fixed;
@@ -411,9 +322,10 @@ body {
 }
 
 /* Estilos para o contêiner da imagem */
-.message--image-container {
-    display: flex;
-    flex-direction: column;
+.message__image-container {
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner da mensagem */
+    overflow: hidden; /* Oculta qualquer parte da imagem que ultrapasse os limites do contêiner */
+    margin-top: 10px; /* Espaçamento superior entre a mensagem e a imagem */
 }
 
 /* Estilo para a mensagem que contém uma imagem enviada pelo usuário */
