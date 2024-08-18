@@ -1,174 +1,311 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Inter", sans-serif;
-}
-
-:root {
-    font-size: 14px;
-}
+/* Importando a fonte Roboto Condensed do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
-    background: url("../images/background2.png");
-    color: white;
-    
-    background-size: cover;
+    font-family: 'Roboto Condensed', sans-serif; /* Atualizando a fonte */
+    background-color: #212121;
+    color: #F5F5F5;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.tt {
+    display: flex;
+    align-items: center;
+    background-color: #FBC02D;
+    color: #212121;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tt__icon {
+    margin-right: 1rem;
+}
+
+.tt__title {
+    font-size: 2rem;
+    font-weight: 600; /* Usando o peso 600 da fonte Roboto Condensed para negrito */
+    margin: 0;
+}
+
+.tt:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7); /* Intensificando a sombra ao passar o mouse */
 }
 
 .container {
-    width: 100%;
-    height: 100dvh;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background-color: #333;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+.login, .register, .email-register {
+    width: 100%;
+}
+
+.login__form, .email-register__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.login__email, .login__password, .register__email, .register__password, .name-input__input {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #444;
+    color: #F5F5F5;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+    font-size: 1rem;
+    transition: box-shadow 0.3s ease;
+}
+
+.login__email:focus, .login__password:focus, .register__email:focus, .register__password:focus {
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.login__button, .register__button, #google-signin-button, .email-register-button, .google-register-button {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #FBC02D;
+    color: #212121;
+    font-weight: 600; /* Usando o peso 600 da fonte Roboto Condensed para negrito */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.email-register-button, .google-register-button {
+    width: calc(100% - 2rem);
+    margin-bottom: 1rem;
+}
+
+.login__button:hover, .register__button:hover, #google-signin-button:hover, .email-register-button:hover, .google-register-button:hover {
+    background-color: #FFEB3B;
+    transform: translateY(-3px);
+}
+
+.register__button, #google-signin-button {
+    margin-top: 0.5rem;
+}
+
+.back-to-login-button, .back-to-register-button {
+    margin-top: 1rem;
+    background-color: #444;
+    color: #F5F5F5;
+    box-shadow: none;
+}
+
+.back-to-login-button:hover, .back-to-register-button:hover {
+    background-color: #555;
+}
+
+.name-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: #333;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.name-input h2 {
+    font-size: 1.5rem;
+    color: #F5F5F5;
+    margin-bottom: 1rem;
+}
+
+.name-input__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.name-input__input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #444;
+    color: #F5F5F5;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+}
+
+.name-input__button {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #FBC02D;
+    color: #212121;
+    font-weight: 600; /* Usando o peso 600 da fonte Roboto Condensed para negrito */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.name-input__button:hover {
+    background-color: #FFEB3B;
+    transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    .tt__title {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding: 1.5rem;
+        max-width: 90%;
+    }
+
+    .login__button, .register__button, #google-signin-button {
+        padding: 0.75rem;
+    }
+}
+
+/* Estilos para a área de chat */
+.chat {
+    display: flex; /* Mostra o chat */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ocupa toda a altura da viewport */
+    width: 100vw; /* Ocupa toda a largura da viewport */
+    background-color: #212121;
+    position: fixed; /* Mantém o chat fixo na tela */
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.chat__form {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.chat__input {
+    flex: 1;
+    padding: 1rem;
+    margin-right: 1rem;
+    border: none;
+    border-radius: 25px;
+    background-color: #444;
+    color: #F5F5F5;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.chat__button, .chat__code-button, .chat__image-button, .code-popup__button  {
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: #FBC02D;
+    color: #212121;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex; /* Alinha ícones com o texto */
     align-items: center;
     justify-content: center;
 }
 
-.login {
-    width: 100%;
-    max-width: 330px;
-    background-color: #101029;
-    border-radius: 8px;
-    padding: 20px;
-}
-
-.login>h2 {
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-.login__form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.login__input {
-    border: none;
-    padding: 15px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    background-color: #121212;
-    color: #055f19;
-    outline: none;
-    border-radius: 5px;
-}
-
-.login__input:focus {
-    outline: 2px solid #f2f2f2;
-}
-
-.login__button {
-    border: none;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    background-color: white;
-    cursor: pointer;
-    color: #121212;
-}
-
-.login__button:hover {
-    background-color: #ddd;
-}
-
-.chat {
-    width: 100%;
-    height: 100%;
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
+.chat__button:hover, .chat__code-button:hover, .chat__image-button:hover, .code-popup__close-button:hover, .code-popup__button:hover {
+    background-color: #FFEB3B;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 .chat__messages {
-    flex-grow: 1;
-    padding: 30px 30px 90px;
+    flex: 1;
+    width: 100%;
+    padding: 1rem;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    word-wrap: break-word;
-}
-
-.chat__form {
-    background-color: #191919;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-}
-
-.chat__input {
-    border: none;
-    padding: 15px;
-    border-radius: 8px;
-    flex-grow: 1;
+    gap: 1rem;
     background-color: #212121;
-    outline: none;
-    color: #f2f2f2;
+    box-sizing: border-box;
+}
+
+.message-self, .message-other {
+    padding: 1rem;
+    border-radius: 25px;
+    max-width: 70%;
+    word-wrap: break-word;
+    position: relative;
     font-size: 1rem;
 }
 
-.chat__button {
-    border: none;
-    background: none;
-    color: #f2f2f2;
-    cursor: pointer;
-}
-
-.chat__button>span {
-    font-size: 1.8rem;
-}
-
-.chat__code-button {
-    border: none;
-    background: none;
-    color: #f2f2f2;
-    cursor: pointer;
-    margin-right: 10px;
-    /* Ajuste a margem conforme necessário */
-}
-
-.chat__messages>div {
-    padding: 10px;
-    width: 100%;
-    max-width: 250px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 15px;
-    line-height: 22px;
-}
-
-.message--self {
-    background-color: #f2f2f2;
-    color: #121212;
-    border-radius: 10px 10px 0 10px;
+.message-self {
+    background-color: #0a0a0a;
+    color: #E0E0E0;
     align-self: flex-end;
+    border-top-right-radius: 0;
 }
 
-.message--other {
-    background-color: #333;
-    color: #f2f2f2;
-    border-radius: 0 10px 10px 10px;
+.message-other {
+    background-color: #383838;
+    color: #E0E0E0;
     align-self: flex-start;
+    border-top-left-radius: 0;
 }
 
-.message--sender {
+.message-username {
     display: block;
-    margin-bottom: 15px;
-    font-weight: 700;
-    color: cadetblue;
+    margin-bottom: 0.2rem;
+    font-weight: bold;
 }
 
-/* Adicione estilos para a tela quadrada */
+.message-content {
+    display: block;
+}
+
+.message-img-container {
+    text-align: center;
+}
+
+.message-img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+
+/* Ajusta a altura da .container quando o título e o formulário de login sumirem */
+.fullscreen {
+    height: 100vh; /* Faz com que a container ocupe a tela inteira */
+}
+
+.fullscreen .chat__messages {
+    height: calc(100vh - 80px); /* Ajusta a altura do chat__messages considerando a altura do chat__form */
+}
+
 .code-popup {
     display: none; /* Inicialmente oculta */
     position: fixed; /* Posicionamento fixo */
@@ -184,16 +321,27 @@ body {
     overflow-y: auto; /* Adiciona barra de rolagem vertical */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra */
     font-family: "Courier New", Courier, monospace; /* Fonte monospace */
+    display: flex;
+    flex-direction: column;
 }
 
 .code-popup__textarea {
     width: 100%; /* Largura total */
-    height: 200px; /* Altura fixa */
+    flex-grow: 1; /* Ocupa o máximo de espaço possível */
     background-color: #000; /* Fundo preto */
     color: #fff; /* Texto branco */
     border: 1px solid #333; /* Borda */
-    padding: 10px; /* Espaçamento interno */
+    padding: 60px; /* Espaçamento interno */
     font-family: "Courier New", Courier, monospace; /* Fonte monospace */
+    box-sizing: border-box; /* Inclui o padding na largura/altura total */
+    resize: none; /* Desativa redimensionamento */
+    overflow-y: auto; /* Permite rolagem vertical */
+    overflow-x: auto; /* Permite rolagem horizontal */
+    white-space: pre; /* Mantém espaços em branco */
+    text-align: left; /* Alinha o texto à esquerda */
+    text-align: left; /* Alinha o texto à esquerda */
+    line-height: 4.5; /* Ajuste da altura da linha */
+    padding-top: 0px;
 }
 
 .code-popup__button {
@@ -203,6 +351,8 @@ body {
     padding: 10px 20px; /* Espaçamento interno */
     cursor: pointer; /* Cursor de ponteiro */
     margin-top: 10px; /* Margem superior */
+    align-self: flex-end; /* Alinha o botão à direita */
+    box-sizing: border-box; /* Inclui o padding na largura/altura total */
 }
 
 .code-popup__button:hover {
@@ -218,6 +368,7 @@ body {
     position: absolute; /* Posicionamento absoluto */
     top: 10px; /* Margem superior */
     right: 10px; /* Margem à direita */
+    box-sizing: border-box; /* Inclui o padding na largura/altura total */
 }
 
 .code-popup__close-button:hover {
@@ -231,6 +382,7 @@ body {
     padding: 5px; /* Espaçamento interno */
     margin-top: 10px; /* Margem superior */
     width: 100%; /* Largura total */
+    box-sizing: border-box; /* Inclui o padding na largura/altura total */
 }
 
 #code-popup-console {
@@ -242,6 +394,7 @@ body {
     width: 100%; /* Largura total */
     height: 100px; /* Altura fixa */
     overflow-y: auto; /* Barra de rolagem vertical */
+    box-sizing: border-box; /* Inclui o padding na largura/altura total */
 }
 
 /* Estilos para sintaxe destacada */
@@ -263,77 +416,4 @@ body {
 
 .code-popup__textarea .brace {
     color: #ce9178; /* Laranja para chaves e colchetes */
-}
-
-
-.message {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px; /* Espaçamento entre as mensagens */
-    min-height: 100px; /* Altura mínima para o contêiner da mensagem */
-}
-
-.message__image-container {
-    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner da mensagem */
-    overflow: hidden; /* Oculta qualquer parte da imagem que ultrapasse os limites do contêiner */
-}
-
-
-
-
-.chat__message-image {
-    width: 100%; /* Ajusta a largura da imagem para preencher o contêiner */
-    height: auto; /* Mantém a proporção original da imagem */
-    border-radius: 8px; /* Borda arredondada */
-}
-/* Estilo para a imagem em tela cheia */
-.chat__image-fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fundo escurecido */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999; /* Coloca a imagem acima de todos os outros elementos */
-}
-
-/* Estilo para a imagem em si dentro do contêiner de tela cheia */
-.chat__image-fullscreen img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 8px;
-}
-
-/* Estilos para as mensagens enviadas pelo usuário */
-.message--self {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Alinha as mensagens à direita */
-}
-
-/* Estilos para as mensagens enviadas por outros usuários */
-.message--other {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Alinha as mensagens à esquerda */
-}
-
-/* Estilos para o contêiner da imagem */
-.message__image-container {
-    max-width: 100%; /* Garante que a imagem não ultrapasse a largura do contêiner da mensagem */
-    overflow: hidden; /* Oculta qualquer parte da imagem que ultrapasse os limites do contêiner */
-    margin-top: 10px; /* Espaçamento superior entre a mensagem e a imagem */
-}
-
-/* Estilo para a mensagem que contém uma imagem enviada pelo usuário */
-.message--self .chat__message-image {
-    align-self: flex-end; /* Alinha a imagem à direita */
-}
-
-/* Estilo para a mensagem que contém uma imagem recebida de outro usuário */
-.message--other .chat__message-image {
-    align-self: flex-start; /* Alinha a imagem à esquerda */
 }
