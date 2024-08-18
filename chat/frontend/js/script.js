@@ -1,290 +1,453 @@
-// login elements
-const login = document.querySelector(".login");
-const loginForm = login.querySelector(".login__form");
-const loginInput = login.querySelector(".login__input");
+document.addEventListener('DOMContentLoaded', function () {
+    // Elementos da interface
+    const loginForm = document.querySelector('.login__form');
+    const registerButton = document.querySelector('.register__button');
+    const nameInputForm = document.querySelector('.name-input__form');
+    const chatForm = document.querySelector('.chat__form');
+    const messagesContainer = document.querySelector('.chat__messages');
+    const codePopup = document.getElementById('code-popup');
+    const codeButton = document.querySelector('.chat__code-button');
+    const codeCloseButton = document.querySelector('.code-popup__close-button');
+    const codeExecuteButton = document.querySelector('.code-popup__button');
+    const codeConsole = document.getElementById('code-popup-console');
+    const imageButton = document.querySelector('.chat__image-button');
+    const imageInput = document.querySelector('#imageInput');
+    const ttElement = document.querySelector('.tt');
+    const container = document.querySelector('.container');
+    const googleSignInButton = document.getElementById('google-signin-button');
+    const emailRegisterButton = document.querySelector('.email-register-button');
+    const googleRegisterButton = document.querySelector('.google-register-button');
+    const backToLoginButton = document.querySelector('.back-to-login-button');
+    const backToRegisterButton = document.querySelector('.back-to-register-button');
 
-// chat elements
-const chat = document.querySelector(".chat");
-const chatForm = chat.querySelector(".chat__form");
-const chatInput = chat.querySelector(".chat__input");
-const chatMessages = chat.querySelector(".chat__messages");
+    const loginSection = document.querySelector('.login');
+    const registerSection = document.querySelector('.register');
+    const emailRegisterSection = document.querySelector('.email-register');
+    
+    // Variáveis globais
+    let userId = null;
+    let userName = null;
+    let userColor = null;
+    const colors = ["cadetblue", "darkgoldenrod", "cornflowerblue", "darkkhaki", "hotpink", "gold"];
 
-const colors = [
-    "cadetblue", "darkgoldenrod", "cornflowerblue", "darkkhaki", "hotpink", "gold"
-];
-
-const user = { id: "", name: "", color: "" };
-
-let websocket;
-
-// Função para criar um elemento de mensagem enviado pelo usuário
-const createMessageSelfElement = (content, userName) => {
-    const div = document.createElement("div");
-    const span = document.createElement("span");
-
-    div.classList.add("message--self");
-    span.classList.add("message--sender");
-    span.style.color = "gray";
-    span.textContent = userName;
-    div.appendChild(span);
-
-    const messageContent = document.createElement("span");
-    messageContent.textContent = content;
-    div.appendChild(messageContent);
-
-    return div;
-};
-
-const createMessageOtherElement = (content, sender, senderColor) => {
-    const div = document.createElement("div");
-    const span = document.createElement("span");
-
-    div.classList.add("message--other");
-    span.classList.add("message--sender");
-    span.style.color = senderColor;
-    span.textContent = sender;
-
-    div.appendChild(span);
-
-    const messageContent = document.createElement("span");
-    messageContent.innerHTML = content;
-    div.appendChild(messageContent);
-
-    return div;
-};
-
-const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
-
-const scrollScreen = () => {
-    window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-    });
-};
-
-const scrollChatToBottom = () => {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-};
-
-
-const responses = {
-    "/bot": "Olá sou o Robozão dos Cria de ADS, posso ajudar com alguns dos comandos abaixo:<br>" +
-        "<br>- /bot o que é algoritmo?<br>" +
-        "- /bot o que é javascript?<br>" +
-        "- /bot qual a diferença entre java e javascript?<br>" +
-        "- /bot o que é html?<br>" +
-        "- /bot qual a diferença entre css e html?",
-    "/bot o que é algoritmo?": "É uma sequência finita de ações executáveis que visam obter uma solução para um determinado tipo de problema.",
-    "/bot o que é javascript?": "JavaScript é uma linguagem de programação amplamente utilizada para criar páginas web interativas.",
-    "/bot qual a diferença entre java e javascript?": "Java e JavaScript são linguagens de programação diferentes. Java é uma linguagem de programação de propósito geral, enquanto JavaScript é principalmente usada para desenvolvimento web.",
-    "/bot o que é html?": "HTML (HyperText Markup Language) é a linguagem padrão para criação de páginas web. Ele define a estrutura básica e o conteúdo de uma página web.",
-    "/bot qual a diferença entre css e html?": "HTML é usado para definir a estrutura e o conteúdo de uma página web, enquanto CSS (Cascading Style Sheets) é usado para estilizar a página e controlar o layout."
-};
-
-// Função para processar os comandos
-const processCommand = (command) => responses[command] || "Comando não reconhecido.";
-
-// Função para enviar uma mensagem de chat
-const sendMessage = (event) => {
-    event.preventDefault();
-
-    const messageContent = chatInput.value.trim();
-    if (!messageContent) return; // Não envia mensagem vazia
-
-    const message = {
-        userId: user.id,
-        userName: user.name,
-        userColor: user.color,
-        content: messageContent
+    // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyA6PWkidk688t7Jt1cRec2pwDrqByI448k",
+        authDomain: "chatcode-3ff70.firebaseapp.com",
+        databaseURL: "https://chatcode-3ff70-default-rtdb.firebaseio.com",
+        projectId: "chatcode-3ff70",
+        storageBucket: "chatcode-3ff70.appspot.com",
+        messagingSenderId: "1017866956028",
+        appId: "1:1017866956028:web:cd08d04c83ad7aa9337b79",
+        measurementId: "G-FNP2G66YZS"
     };
 
-    chatInput.value = ""; // Limpa o campo de entrada de mensagem
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    const storage = firebase.storage();
+const database = firebase.database();
 
-    if (websocket.readyState === WebSocket.OPEN) {
-        websocket.send(JSON.stringify(message)); // Envia a mensagem para o servidor WebSocket
-    } else {
-        console.error("WebSocket não está conectado.");
-    }
-    scrollChatToBottom();
-};
-
-// Função para lidar com o envio de imagens
-const sendImage = (event) => {
-    event.preventDefault();
-
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*"; // Aceita apenas arquivos de imagem
-
-    input.onchange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const imageData = event.target.result;
-                const message = {
-                    userId: user.id,
-                    userName: user.name,
-                    userColor: user.color,
-                    content: imageData,
-                    isImage: true // Marca a mensagem como uma imagem
-                };
-                if (websocket.readyState === WebSocket.OPEN) {
-                    websocket.send(JSON.stringify(message)); // Envia a imagem para o servidor WebSocket
-                } else {
-                    console.error("WebSocket não está conectado.");
-                }
-            };
-        }
+    // Respostas automáticas do bot
+    const responses = {
+        "/bot": "Olá! Sou o Robozão dos Cria de ADS. Posso ajudar com alguns dos comandos abaixo:<br>" +
+            "<br>- /bot o que é algoritmo?<br>" +
+            "- /bot o que é javascript?<br>" +
+            "- /bot qual a diferença entre java e javascript?<br>" +
+            "- /bot o que é html?<br>" +
+            "- /bot qual o comando de git para fazer commit?<br>" +
+            "- /bot quais as permissões do chmod?<br>" +
+            "- /bot como criar um repositório no github?<br>" +
+            "- /bot o que é typescript?<br>",
+        "/bot o que é algoritmo?": "Um algoritmo é uma sequência finita de ações executáveis que visam obter uma solução para um determinado tipo de problema.",
+        " /bot o que é javascript?": "JavaScript é uma linguagem de programação de alto nível, interpretada e orientada a objetos. É amplamente utilizada para criar páginas da web interativas e dinâmicas.",
+        "/bot qual a diferença entre java e javascript?": "Apesar dos nomes semelhantes, Java e JavaScript são linguagens de programação distintas. Java é uma linguagem de programação de propósito geral, enquanto JavaScript é uma linguagem de script principalmente usada para desenvolvimento web.",
+        "/bot o que é html?": "HTML (Hypertext Markup Language) é a linguagem padrão para criar páginas da web. Ele descreve a estrutura básica de uma página da web usando elementos HTML.",
+        "/bot qual o comando de git para fazer commit?": "O comando do Git para fazer commit é `git commit`. Este comando é usado para salvar as mudanças feitas no repositório Git.",
+        "/bot quais as permissões do chmod?": "O comando `chmod` é usado no sistema Unix e Unix-like para modificar as permissões de acesso aos arquivos. As permissões incluem ler, gravar e executar, e podem ser definidas para o proprietário do arquivo, o grupo associado ao arquivo e outros usuários.",
+        "/bot como criar um repositório no github?": "Para criar um repositório no GitHub, você precisa fazer login na sua conta GitHub, clicar no botão '+' no canto superior direito e selecionar 'New repository'. Em seguida, siga as instruções para configurar o seu repositório.",
+        "/bot o que é typescript?": "TypeScript é uma linguagem de programação de código aberto desenvolvida pela Microsoft. É uma superset da linguagem JavaScript e adiciona tipagem estática opcional, entre outras funcionalidades, o que ajuda a evitar erros comuns e a facilitar o desenvolvimento de grandes aplicativos JavaScript."
     };
 
-    input.click();
-    scrollChatToBottom();
-};
 
-// Adicione um event listener para o clique no botão Image
-const imageButton = document.querySelector(".chat__image-button");
-imageButton.addEventListener("click", sendImage);
+// Função de login com email e senha
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = loginForm.querySelector('.login__email').value;
+    const password = loginForm.querySelector('.login__password').value;
 
-// Função para processar as mensagens recebidas
-const processMessage = ({ data }) => {
-    const { userId, userName, userColor, content, isImage } = JSON.parse(data);
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            userId = userCredential.user.uid;
+            userColor = colors[Math.floor(Math.random() * colors.length)];
+            ttElement.style.display = 'none';
+            container.classList.add('fullscreen');
+            loginForm.parentElement.style.display = 'none';
+            document.querySelector('.name-input').style.display = 'flex';
 
-    let message;
-
-    if (isImage) {
-        // Se a mensagem é uma imagem, crie um contêiner de imagem
-        const imageContainer = document.createElement("div");
-        imageContainer.classList.add("message--image-container");
-
-        const imageElement = document.createElement("img");
-        imageElement.src = content; // Defina o atributo src da imagem para a URL da imagem base64
-        imageElement.classList.add("chat__message-image");
-
-        // Adiciona evento de clique para exibir a imagem em tela cheia
-        imageElement.addEventListener("click", () => {
-            const fullscreenDiv = document.createElement("div");
-            fullscreenDiv.classList.add("chat__image-fullscreen");
-
-            const fullscreenImage = document.createElement("img");
-            fullscreenImage.src = content;
-
-            fullscreenDiv.appendChild(fullscreenImage);
-            document.body.appendChild(fullscreenDiv);
-
-            // Adiciona evento para sair da tela cheia ao clicar fora da imagem
-            fullscreenDiv.addEventListener("click", () => {
-                document.body.removeChild(fullscreenDiv);
-            });
+            // Verifica se o nome do usuário já está no banco de dados
+            return database.ref(`users/${userId}/name`).once('value');
+        })
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                document.querySelector('.name-input').style.display = 'none';
+                document.querySelector('.chat').style.display = 'flex';
+                loadMessages();
+            }
+        })
+        .catch((error) => {
+            console.error('Erro ao fazer login:', error.message);
+            if (error.code === 'auth/user-not-found') {
+                alert('Usuário não encontrado. Por favor, registre-se primeiro.');
+            }
         });
+});
 
-        imageContainer.appendChild(imageElement);
+// Função para exibir a seção de registro
+registerButton.addEventListener('click', () => {
+    loginSection.style.display = 'none';
+    registerSection.style.display = 'block';
+});
 
-        if (userId === user.id) {
-            imageContainer.classList.add("message--self");
-        } else {
-            imageContainer.classList.add("message--other");
-        }
+// Função para exibir a seção de cadastro com email e senha
+emailRegisterButton.addEventListener('click', () => {
+    registerSection.style.display = 'none';
+    emailRegisterSection.style.display = 'block';
+});
 
-        message = imageContainer;
+// Função para registro com Google
+googleRegisterButton.addEventListener('click', () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.fetchSignInMethodsForEmail(provider.email) // Verifica se o email já está registrado
+        .then((methods) => {
+            if (methods.length > 0) {
+                alert('Esta conta do Google já está registrada. Por favor, faça login.');
+            } else {
+                auth.signInWithPopup(provider)
+                    .then((result) => {
+                        userId = result.user.uid;
+                        userColor = colors[Math.floor(Math.random() * colors.length)];
+                        ttElement.style.display = 'none';
+                        container.classList.add('fullscreen');
+                        registerSection.style.display = 'none';  // Oculta a tela de registro
+                        emailRegisterSection.style.display = 'none';  // Oculta a tela de cadastro por email/senha
+                        document.querySelector('.name-input').style.display = 'flex';  // Exibe a tela de inserção do nome
+                    })
+                    .catch((error) => {
+                        console.error('Erro ao registrar com o Google:', error.message);
+                    });
+            }
+        })
+        .catch((error) => {
+            console.error('Erro ao verificar email do Google:', error.message);
+        });
+});
+
+// Função para voltar para a tela de login a partir da tela de registro
+backToLoginButton.addEventListener('click', () => {
+    registerSection.style.display = 'none';
+    loginSection.style.display = 'block';
+});
+
+// Função para voltar para a tela de seleção de registro a partir da tela de cadastro com email e senha
+backToRegisterButton.addEventListener('click', () => {
+    emailRegisterSection.style.display = 'none';
+    registerSection.style.display = 'block';
+});
+
+// Função de registro com email e senha
+emailRegisterSection.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = emailRegisterSection.querySelector('.register__email').value;
+    const password = emailRegisterSection.querySelector('.register__password').value;
+
+    auth.fetchSignInMethodsForEmail(email)
+        .then((methods) => {
+            if (methods.length > 0) {
+                alert('Este email já está registrado. Por favor, faça login.');
+            } else {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        userId = userCredential.user.uid;
+                        userColor = colors[Math.floor(Math.random() * colors.length)];
+                        ttElement.style.display = 'none';
+                        container.classList.add('fullscreen');
+                        registerSection.style.display = 'none';  // Oculta a tela de registro
+                        emailRegisterSection.style.display = 'none';  // Oculta a tela de cadastro por email/senha
+                        document.querySelector('.name-input').style.display = 'flex';  // Exibe a tela de inserção do nome
+                    })
+                    .catch((error) => {
+                        console.error('Erro ao fazer registro:', error.message);
+                    });
+            }
+        })
+        .catch((error) => {
+            console.error('Erro ao verificar email:', error.message);
+        });
+});
+
+// Função de login com Google
+googleSignInButton.addEventListener('click', () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            userId = result.user.uid;
+            userColor = colors[Math.floor(Math.random() * colors.length)];
+            ttElement.style.display = 'none';
+            container.classList.add('fullscreen');
+            loginForm.parentElement.style.display = 'none';
+            document.querySelector('.name-input').style.display = 'flex';
+
+            // Verifica se o nome do usuário já está no banco de dados
+            return database.ref(`users/${userId}/name`).once('value');
+        })
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                userName = snapshot.val(); // Atribui o nome recuperado à variável userName
+                document.querySelector('.name-input').style.display = 'none';
+                document.querySelector('.chat').style.display = 'flex';
+                loadMessages();
+            } else {
+                // Se o nome não existir, mantém a tela de input para o usuário inserir o nome.
+                document.querySelector('.name-input').style.display = 'flex';
+            }
+            
+        })
+        .catch((error) => {
+            console.error('Erro ao fazer login com o Google:', error.message);
+            if (error.code === 'auth/user-not-found') {
+                alert('Usuário não encontrado. Por favor, registre-se primeiro.');
+            }
+        });
+});
+
+// Função para capturar o nome do usuário e exibir o chat
+nameInputForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    userName = nameInputForm.querySelector('.name-input__input').value;
+
+    // Salva o nome do usuário no Realtime Database
+    database.ref(`users/${userId}`).set({
+        name: userName
+    })
+    .then(() => {
+        document.querySelector('.name-input').style.display = 'none';
+        document.querySelector('.chat').style.display = 'flex';
+        loadMessages();
+    })
+    .catch((error) => {
+        console.error('Erro ao salvar o nome do usuário:', error.message);
+    });
+});
+
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        userId = user.uid;
+
+        // Verifica se o nome do usuário já está salvo no banco de dados
+        database.ref(`users/${userId}/name`).once('value')
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    userName = snapshot.val();  // Recupera o nome do usuário
+
+                    // Exibe a seção de input de nome, mas não o chat
+                    document.querySelector('.name-input').style.display = 'none';
+                    document.querySelector('.chat').style.display = 'none';
+
+                    // Adiciona evento ao botão de confirmação do nome
+                    document.querySelector('.name-input__form').addEventListener('submit', (event) => {
+                        event.preventDefault();  // Impede o envio do formulário
+                        const nameInput = document.querySelector('.name-input__input').value;
+
+                        if (nameInput) {
+                            // Salva o nome do usuário no banco de dados
+                            database.ref(`users/${userId}/name`).set(nameInput)
+                                .then(() => {
+                                    // Após salvar o nome, oculta a seção de input e exibe o chat
+                                    document.querySelector('.name-input').style.display = 'none';
+                                    document.querySelector('.chat').style.display = 'flex';
+                                    loadMessages();
+                                })
+                                .catch((error) => {
+                                    console.error('Erro ao salvar o nome do usuário:', error.message);
+                                });
+                        } else {
+                            alert('Por favor, insira um nome válido.');
+                        }
+                    });
+                } else {
+                    // Se o nome não existir, exibe o formulário para inseri-lo
+                    document.querySelector('.name-input').style.display = 'flex';
+                    document.querySelector('.chat').style.display = 'none';
+                }
+            })
+            .catch((error) => {
+                console.error('Erro ao recuperar o nome do usuário:', error.message);
+            });
     } else {
-        const lowerContent = content.toLowerCase().trim();
-        if (lowerContent.startsWith("/bot")) {
-            message = createMessageOtherElement(processCommand(lowerContent), "Robozão dos Cria de ADS", "gray");
-        } else {
-            message = userId === user.id ?
-                createMessageSelfElement(content, userName) :
-                createMessageOtherElement(content, userName, userColor);
+        // Redirecionar para a tela de login, se necessário
+        window.location.href = '/login';
+    }
+});
+
+
+
+    
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const messageInput = chatForm.querySelector('.chat__input');
+        const message = messageInput.value;
+        const timestamp = new Date().toLocaleString();
+        
+        if (message.trim() !== '') {
+            if (message === '/clearall') {
+                clearAllMessages();
+            } else {
+                db.ref('messages').push({
+                    userId,
+                    userName,
+                    userColor,
+                    message,
+                    timestamp,
+                });
+            }
+            messageInput.value = '';
+            checkBotResponse(message);
         }
+    });
+
+    function clearAllMessages() {
+        messagesContainer.innerHTML = '';
     }
 
-    chatMessages.appendChild(message);
-    scrollScreen();
-    scrollChatToBottom();
-};
+    db.ref('messages').on('child_added', (snapshot) => {
+        const message = snapshot.val();
+        displayMessage(message);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
 
-// Lida com o evento de login
-loginForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+    function displayMessage({ userId: senderId, userName, userColor, message, timestamp }) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add(senderId === userId ? 'message-self' : 'message-other');
+        messageElement.innerHTML = `
+            <span class="message-username" style="color: ${userColor}">${userName} - ${timestamp}</span>
+            <span class="message-content">${message}</span>
+        `;
+        messagesContainer.appendChild(messageElement);
+    }
 
-    user.name = loginInput.value.trim();
-    if (!user.name) return;
+    codeButton.addEventListener('click', () => {
+        codePopup.style.display = 'flex';
+    });
 
-    user.id = new Date().getTime(); // Cria um ID único para o usuário
-    user.color = getRandomColor();
+    codeCloseButton.addEventListener('click', () => {
+        codePopup.style.display = 'none';
+    });
 
-    login.style.display = "none";
-    chat.style.display = "block";
-
-    websocket = new WebSocket("wss://chatcode-4p2g.onrender.com");
-
-    websocket.onopen = () => {
-        console.log("Conectado ao servidor WebSocket");
-    };
-
-    websocket.onmessage = processMessage;
-
-    websocket.onclose = () => {
-        console.log("Desconectado do servidor WebSocket");
-    };
-
-    websocket.onerror = (error) => {
-        console.error("Erro no WebSocket", error);
-    };
-});
-
-// Lida com o envio de mensagens de chat
-chatForm.addEventListener("submit", sendMessage);
-
-// Adicione um event listener para o clique no botão Code
-const codeButton = document.querySelector(".chat__code-button");
-const codePopup = document.querySelector(".code-popup");
-
-codeButton.addEventListener("click", () => {
-    codePopup.style.display = "block";
-    codeConsole.textContent = "";
-});
-
-// Selecione o textarea, o botão e o console
-const codeTextarea = document.querySelector(".code-popup__textarea");
-const codeConsole = document.getElementById("code-popup-console");
-const languageSelector = document.querySelector(".code-popup__language-selector");
-const codeButtonExecutar = document.querySelector(".code-popup__button");
-
-// Adicione um event listener para o clique no botão Executar
-codeButtonExecutar.addEventListener("click", () => {
-    try {
-        codeConsole.innerHTML = "";
-
+    codeExecuteButton.addEventListener('click', () => {
+        const languageSelector = document.querySelector('.code-popup__language-selector');
+        const codeTextarea = document.querySelector('.code-popup__textarea');
+        const language = languageSelector.value;
         const code = codeTextarea.value;
-        const selectedLanguage = languageSelector.value;
+        executeCode(language, code);
+    });
 
-        if (selectedLanguage === "javascript") {
-            eval(code);
-        } else if (selectedLanguage === "typescript") {
-            const compiledCode = ts.transpile(code);
-            eval(compiledCode);
-        } else {
-            throw new Error("Linguagem de programação não suportada.");
+async    function executeCode(language, code) {
+        codeConsole.innerHTML = '';
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            const message = args.join(' ') + '\n';
+            codeConsole.innerHTML += message.replace(/\n/g, '<br>');
+            originalConsoleLog.apply(console, args);
+        };
+    
+        try {
+            if (language === 'javascript') {
+                const result = executeJavaScript(code);
+                if (result !== undefined) {
+                    codeConsole.innerHTML += result;
+                }
+            } else if (language === 'typescript') {
+                const tsResult = ts.transpile(code);
+                const result = executeJavaScript(tsResult);
+                if (result !== undefined) {
+                    codeConsole.innerHTML += result;
+                }
+            }else if (language === 'python') {
+            const response = await fetch('/execute-python', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+            const result = await response.text();
+            codeConsole.innerHTML += result;
         }
-    } catch (error) {
-        console.error(error);
-        codeConsole.innerHTML += "<span style='color: red;'>" + error.toString() + "</span><br>";
+        } catch (error) {
+            codeConsole.innerHTML += `Error: ${error.message}`;
+        } finally {
+            console.log = originalConsoleLog;
+        }
+    }
+    
+    function executeJavaScript(code) {
+        try {
+            const result = (new Function(code))();
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    imageButton.addEventListener('click', () => {
+        imageInput.click();
+    });
+
+    imageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const storageRef = storage.ref('images/' + file.name);
+            storageRef.put(file).then(() => {
+                storageRef.getDownloadURL().then((url) => {
+                    const messageInput = chatForm.querySelector('.chat__input');
+                    const timestamp = new Date().toLocaleString();
+                    
+                    db.ref('messages').push({
+                        userId,
+                        userName,
+                        userColor,
+                        message: `<div class="message-img-container"><img src="${url}" class="message-img"></div>`,
+                        timestamp,
+                    });
+                });
+            });
+        }
+    });
+
+    function loadMessages() {
+        db.ref('messages').once('value', (snapshot) => {
+            const messages = snapshot.val();
+            for (let id in messages) {
+                displayMessage(messages[id]);
+            }
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+    }
+
+    // Check for bot responses
+    function checkBotResponse(messageText) {
+        const lowerCaseMessage = messageText.toLowerCase();
+        if (responses.hasOwnProperty(lowerCaseMessage)) {
+            const botResponse = responses[lowerCaseMessage];
+            const botMessage = {
+                userId: 'bot',
+                userName: 'ChatCodeBot',
+                userColor: 'lightblue',
+                message: botResponse,
+                timestamp: new Date().toLocaleString(),
+            };
+            setTimeout(() => {
+                db.ref('messages').push(botMessage);
+            }, 1000);
+        }
     }
 });
-
-// Selecione o botão de fechar
-const closeBtn = document.querySelector(".code-popup__close-button");
-
-closeBtn.addEventListener("click", () => {
-    codePopup.style.display = "none";
-});
-
-// Substitua a função console.log para exibir logs no elemento codeConsole
-const originalConsoleLog = console.log;
-console.log = function() {
-    originalConsoleLog.apply(console, arguments);
-    const message = Array.from(arguments).join(",");
-    codeConsole.textContent += message + "\n";
-};
